@@ -1,0 +1,27 @@
+{
+  "name": "cse-340-masterpieces",
+  "version": "1.0.0",
+  "description": "This is my craft",
+  "homepage": "https://github.com/Giorubio27/cse-340-masterpieces#readme",
+  "bugs": {
+    "url": "https://github.com/Giorubio27/cse-340-masterpieces/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Giorubio27/cse-340-masterpieces.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
