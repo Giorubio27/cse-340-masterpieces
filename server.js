@@ -28,25 +28,37 @@ app.set('views', path.join(__dirname, 'src/views'));
 /**
   * Routes
   */
-app.get('/', async (req, res) => {
+
+app.get('/', asyncHandler(async (req, res) => {
     const title = 'Home';
+    // If an await here rejects or a throw happens, it flows to your error middleware.
     res.render('home', { title });
-});
+}));
 
-app.get('/organizations', async (req, res) => {
-    const title = 'Our Partner Organizations';
+
+
+app.get('/organizations', asyncHandler(async (req, res) => {
+    const title = 'Organizations';
+    // If an await here rejects or a throw happens, it flows to your error middleware.
     res.render('organizations', { title });
-});
+}));
 
-app.get('/projects', async (req, res) => {
+
+
+app.get('/projects', asyncHandler(async (req, res) => {
     const title = 'Service Projects';
+    // If an await here rejects or a throw happens, it flows to your error middleware.
     res.render('projects', { title });
-});
+}));
 
-app.get('/categories', async (req, res) => {
+
+
+app.get('/categories', asyncHandler(async (req, res) => {
     const title = 'Categories';
+    // If an await here rejects or a throw happens, it flows to your error middleware.
     res.render('categories', { title });
-});
+}));
+
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://127.0.0.1:${PORT}`);
