@@ -24,16 +24,59 @@ CREATE TABLE IF NOT EXISTS public.projects
     CONSTRAINT projects_pkey PRIMARY KEY (project_id)
 );
 
+CREATE TABLE IF NOT EXISTS public.categories
+(
+    category_id serial NOT NULL,
+    category_name character varying(255) NOT NULL DEFAULT name,
+    PRIMARY KEY (category_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.categories_projects
+(
+    categories_category_id serial NOT NULL,
+    projects_project_id serial NOT NULL
+);
+
 ALTER TABLE IF EXISTS public.projects
-    ADD FOREIGN KEY (organization_id)
+    ADD CONSTRAINT projects_organization_id_fkey FOREIGN KEY (organization_id)
     REFERENCES public.organization (organization_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
 
-END;
 
-SELECT * FROM projects;
+ALTER TABLE IF EXISTS public.projects
+    ADD CONSTRAINT projects_organization_id_fkey1 FOREIGN KEY (organization_id)
+    REFERENCES public.organization (organization_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.categories_projects
+    ADD FOREIGN KEY (categories_category_id)
+    REFERENCES public.categories (category_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.categories_projects
+    ADD FOREIGN KEY (projects_project_id)
+    REFERENCES public.projects (project_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+END;
+select * from organization;
+
+INSERT INTO organization (name, description, contact_email, logo_filename)
+VALUES
+('BrightFuture Builders', 'A nonprofit focused on improving community infrastructure through sustainable construction projects.', 'info@brightfuturebuilders.org', 'brightfuture-logo.png'),
+('GreenHarvest Growers', 'An urban farming collective promoting food sustainability and education in local neighborhoods.', 'contact@greenharvest.org', 'greenharvest-logo.png'),
+('UnityServe Volunteers', 'A volunteer coordination group supporting local charities and service initiatives.', 'hello@unityserve.org', 'unityserve-logo.png');
+
 
 INSERT INTO public.projects (title, description, location, date, organization_id) VALUES
 -- Tech Relief (ID 1)
@@ -58,15 +101,35 @@ INSERT INTO public.projects (title, description, location, date, organization_id
 ('Gallery Night', 'Showing local student art.', '{"Urban Gallery"}', '2026-06-10', 3),
 ('Instrument Drive', 'Collecting used guitars.', '{"High School"}', '2026-06-25', 3);
 
-SELECT 
-    o.name AS organization_name, 
-    p.title AS project_title, 
-    p.date
-FROM public.organization o
-JOIN public.projects p ON o.organization_id = p.organization_id
-ORDER BY o.name;
+INSERT INTO public.categories (category_name) VALUES
+('Environmental Sustainability'), -- Likely ID 1
+('Digital Empowerment'),          -- Likely ID 2
+('Academic Support'),             -- Likely ID 3
+('Community Safety & Literacy'),  -- Likely ID 4
+('Arts & Culture');               -- Likely ID 5
 
+INSERT INTO public.categories_projects (categories_category_id, projects_project_id) VALUES
+-- Category 1: Environmental Sustainability
+(1, 6), (1, 7), (1, 8), (1, 9), (1, 10); 
 
+INSERT INTO public.categories_projects (categories_category_id, projects_project_id) VALUES
+-- Category 2: Digital Empowerment
+(2, 1), (2, 2), (2, 3), (2, 4), (2, 5);
 
+INSERT INTO public.categories_projects (categories_category_id, projects_project_id) VALUES
+-- Category 4: Community Safety & Literacy (Mapping some tech training here)
+(4, 4), (4, 5), (4, 2);
+INSERT INTO public.categories_projects (categories_category_id, projects_project_id) VALUES
+-- Category 5: Arts & Culture
+(5, 11), (5, 12), (5, 13), (5, 14), (5, 15);
 
-
+SELECT
+    p.title,
+    p.date,
+    o.name AS organization_name,
+    c.category_name
+FROM public.projects p
+JOIN public.organization o ON p.organization_id = o.organization_id
+LEFT JOIN public.categories_projects cp ON p.project_id = cp.projects_project_id
+LEFT JOIN public.categories c ON cp.categories_category_id = c.category_id
+ORDER BY p.date DESC;
