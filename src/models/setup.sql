@@ -133,3 +133,10 @@ JOIN public.organization o ON p.organization_id = o.organization_id
 LEFT JOIN public.categories_projects cp ON p.project_id = cp.projects_project_id
 LEFT JOIN public.categories c ON cp.categories_category_id = c.category_id
 ORDER BY p.date DESC;
+
+
+SELECT categories_category_id, projects_project_id, COUNT(*) AS occurrences
+FROM public.categories_projects
+GROUP BY categories_category_id, projects_project_id
+HAVING COUNT(*) > 1;
+
