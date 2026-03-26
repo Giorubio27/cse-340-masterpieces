@@ -3,14 +3,27 @@
     <h1>
         <%= title %>
     </h1>
-    <h2>Upcoming Service Projects</h2>
-    <ul>
-        <% projects.forEach(project => { %>
-            <li><%= new Date(project.date).toDateString() %>:
-                 <%= project.title %> (<%= project.organization_name %>)
-                </li>
+    <div class="projects-container">
+        <% projects.forEach(project=> { %>
+            <div class="project-card">
+                <h3>
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.title %>
+                    </a>
+                </h3>
+    
+                <p><strong>Date:</strong>
+                    <%= project.date.toDateString() %>
+                </p>
+    
+                <p>Organization:
+                    <a href="/organization/<%= project.organization_id %>">
+                        <%= project.organization_name %>
+                    </a>
+                </p>
+            </div>
+            <hr>
             <% }); %>
-    </ul>
-    <!-- Put your page-specific content here -->
+    </div>
 </main>
 <%- include('partials/footer') %>

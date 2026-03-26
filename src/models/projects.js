@@ -45,7 +45,16 @@ const getUpcomingProjects = async (number_of_projects) => {
   return result.rows;
 };
 
+const getProjectDetails = async (id) => {
+  const query = `SELECT p.project_id, p.title, p.description, p.date, p.location, p.organization_id, o.name AS organization_name
+    FROM public.projects p
+    JOIN public.organization o ON p.organization_id = o.organization_id
+    WHERE p.project_id = $1;`;
 
+  const result = await db.query(query, [id]);
+  return result.rows[0]; // Returns a single project object
+};
 
-// Export the model functions
-export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects };
+// Don't forget to add getProjectDetails to your export statement
+export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails };
+

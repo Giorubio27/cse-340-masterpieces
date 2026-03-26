@@ -3,7 +3,8 @@ import express from 'express';
 import { showHomePage } from './index.js';
 import { showOrganizationsPage } from './organizations.js';
 import { showOrganizationDetailsPage } from './organizations.js';
-import { showProjectsPage } from './projects.js';
+import { showProjectDetailsPage, showProjectsPage } from './projects.js';
+import { getProjectDetails } from '../models/projects.js';
 import { showCategoriesPage } from './categories.js';
 import { testErrorPage } from './errors.js';
 
@@ -19,5 +20,10 @@ router.get('/categories', showCategoriesPage);
 router.get('/test-error', testErrorPage);
 // Route for organization details page
 router.get('/organization/:id', showOrganizationDetailsPage);
+
+// 2. Add the new route for the project details page
+// The ':id' is a route parameter that will be passed to your controller
+router.get('/project/:id', showProjectDetailsPage);
+
 
 export default router;
