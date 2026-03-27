@@ -21,6 +21,15 @@
                 </a>
             </p>
         </div>
+        <h3>Categories</h3>
+        <div class="tags">
+            <% categories.forEach(category=> { %>
+                <a href="/category/<%= category.category_id %>" class="tag">
+                    <%= category.category_name %>
+                </a>
+                <% }) %>
+        </div>
+
 
         <hr>
         <p><a href="/projects">← Back to All Upcoming Projects</a></p>

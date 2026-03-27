@@ -24,13 +24,15 @@ const showProjectDetailsPage = async (req, res, next) => {
     if (!project) {
         const error = new Error('Project not found');
         error.status = 404;
-        next(error); // Pass the error to the error-handling middleware
-        return;
+        return next(error); // Pass the error to the error-handling middleware
+        
     }
+
+    const categories = await getAllCategoriesByProjectId(projectId);
 
 
     // Render the new view (project.ejs) and pass the data
-    res.render('project', { title: project.title, project });
+    res.render('project', { title: project.title, project, categories });
 };
 
 const showProjectsByOrganization = async (req, res) => {

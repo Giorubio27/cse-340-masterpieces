@@ -5,9 +5,11 @@
         </h1>
         <h2>Welcome to the CSE 340 Service Network!</h2>
         <ul>
-            <% categories.forEach(category => { %>
-                <li><%= category.category_name %></li>
-            <% }); %>
+            <% categories.forEach(category=> { %>
+                <a href="/category/<%= category.category_id %>">
+                    <%= category.category_name %>
+                </a>
+                <% }) %>
             
         </ul>
         <!-- Put your page-specific content here -->
