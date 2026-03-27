@@ -1,5 +1,6 @@
 // Import any needed model functions
 import { getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails } from '../models/projects.js';
+import { getAllCategoriesByProjectId } from '../models/categories.js';
 
 
 const number_of_upcoming_projects = 5; // You can adjust this number as needed
