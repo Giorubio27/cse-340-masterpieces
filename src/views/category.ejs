@@ -1,16 +1,16 @@
 <%- include('partials/header') %>
-    <main>
-        <h1>
-            <%= category.category_name %> Projects
-        </h1>
-        <ul>
-            <% projects.forEach(project=> { %>
-                <li>
-                    <a href="/project/<%= project.project_id %>">
-                        <%= project.title %>
-                    </a>
-                </li>
-                <% }) %>
-        </ul>
-    </main>
-    <%- include('partials/footer') %>
+<main>
+    <h1>
+        <%= category.category_name %> Projects
+    </h1>
+    <ul>
+        <% projects.forEach(project=> { %>
+            <li>
+                <a href="/project/<%= project.project_id %>">
+                    <%= project.title %>
+                </a>
+            </li>
+            <% }) %>
+    </ul>
+</main>
+<%- include('partials/footer') %>
