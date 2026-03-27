@@ -22,7 +22,7 @@ router.get('/categories', showCategoriesPage);
 router.get('/test-error', testErrorPage);
 // Route for organization details page
 router.get('/organization/:id', showOrganizationDetailsPage);
-router.get('/categories/:id', showCategoryDetailsPage);
+router.get('/category/:id', showCategoryDetailsPage);
 
 // 2. Add the new route for the project details page
 // The ':id' is a route parameter that will be passed to your controller
