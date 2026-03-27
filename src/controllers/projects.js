@@ -14,15 +14,23 @@ const showProjectsPage = async (req, res) => {
 };
 
 // 4. Create the new controller function for project details
-const showProjectDetailsPage = async (req, res) => {
+const showProjectDetailsPage = async (req, res, next) => {
     // Extract the service project ID from the URL parameters
     const projectId = req.params.id;
 
     // Retrieve the specific project using the model function
     const project = await getProjectDetails(projectId);
 
+    if (!project) {
+        const error = new Error('Project not found');
+        error.status = 404;
+        next(error); // Pass the error to the error-handling middleware
+        return;
+    }
+
+
     // Render the new view (project.ejs) and pass the data
-    res.render('project', { title: 'Project Details', project });
+    res.render('project', { title: project.title, project });
 };
 
 const showProjectsByOrganization = async (req, res) => {
@@ -32,8 +40,6 @@ const showProjectsByOrganization = async (req, res) => {
 
     res.render('projects', { title, projects });
 };
-
-
 
 
 // Export any controller functions

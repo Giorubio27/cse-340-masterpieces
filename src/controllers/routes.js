@@ -4,7 +4,7 @@ import { showHomePage } from './index.js';
 import { showOrganizationsPage } from './organizations.js';
 import { showOrganizationDetailsPage } from './organizations.js';
 import { showProjectDetailsPage, showProjectsPage } from './projects.js';
-import { getProjectDetails } from '../models/projects.js';
+
 import { showCategoriesPage } from './categories.js';
 import { testErrorPage } from './errors.js';
 
