@@ -20,8 +20,8 @@ const getCategoryById = async (id) => {
 const getAllCategoriesByProjectId = async (projectId) => {
     const query = `SELECT c.category_id, c.category_name
     FROM categories c
-    JOIN project_categories pc ON c.category_id = pc.category_id
-    WHERE pc.project_id = $1;`;
+    JOIN categories_projects cp ON c.category_id = cp.categories_category_id
+    WHERE cp.projects_project_id = $1;`;
 
     const result = await db.query(query, [projectId]);
     return result.rows;
@@ -30,8 +30,8 @@ const getAllCategoriesByProjectId = async (projectId) => {
 const getAllProjectsByCategoryId = async (categoryId) => {
     const query = `SELECT p.project_id, p.title, p.description, p.date, p.location, o.name AS organization_name
     FROM projects p
-    JOIN project_categories pc ON p.project_id = pc.project_id
-    WHERE pc.category_id = $1;`;
+    JOIN categories_projects cp ON p.project_id = cp.projects_project_id
+    WHERE cp.categories_category_id = $1;`;
 
     const result = await db.query(query, [categoryId]);
     return result.rows;
