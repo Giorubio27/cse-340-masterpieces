@@ -1,7 +1,9 @@
 import express from 'express';
+import session from 'express-session';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
+import flash from './src/middleware/flash.js'; 
 
 import router from './src/controllers/routes.js';
 
@@ -26,6 +28,16 @@ app.use(express.json());
   */
 
 // Serve static files from the public directory
+// Set up session management
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
+}));
+
+// Use flash message middleware
+app.use(flash);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
