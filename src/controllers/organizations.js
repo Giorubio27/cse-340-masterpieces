@@ -78,6 +78,17 @@ const processNewOrganizationForm = async (req, res) => {
     res.redirect(`/organization/${organizationId}`);
 };
 
+const processEditOrganizationForm = async (req, res) => {
+    const organizationId = req.params.id;
+    const { name, description, contactEmail, logoFilename } = req.body;
+
+    await updateOrganization(organizationId, name, description, contactEmail, logoFilename);
+    // Set a success message using flash
+    req.flash('success', 'Organization updated successfully');
+
+    res.redirect(`/organization/${organizationId}`);
+};
+
 // Export any controller functions
 
 
@@ -86,5 +97,7 @@ export {
     showOrganizationDetailsPage,
     showNewOrganizationForm,
     processNewOrganizationForm,
-    organizationValidation, showEditOrganizationForm
+    organizationValidation,
+    showEditOrganizationForm,
+    processEditOrganizationForm
 };
