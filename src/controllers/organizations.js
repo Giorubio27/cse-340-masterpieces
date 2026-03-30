@@ -1,6 +1,7 @@
 import { getAllOrganizations, getOrganizationDetails } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 import { createOrganization } from '../models/organization.js';
+import { updateOrganization } from '../models/organizations.js';
 import { body, validationResult } from 'express-validator';
 
 // Define validation and sanitization rules for organization form
