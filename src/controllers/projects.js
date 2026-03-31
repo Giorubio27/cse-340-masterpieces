@@ -47,8 +47,9 @@ const showProjectsByOrganization = async (req, res) => {
 
 const showNewProjectForm = async (req, res) => {
     const organizations = await getAllOrganizations();
+    const title = 'Create New Service Project';
 
-    res.render('new-project', { title: 'Create New Project', organizations });
+    res.render('new-project', { title, organizations });
 };
 
 const processNewProjectForm = async (req, res) => {
