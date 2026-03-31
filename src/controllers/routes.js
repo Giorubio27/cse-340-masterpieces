@@ -10,6 +10,7 @@ import { organizationValidation } from './organizations.js';
 import { showEditOrganizationForm } from './organizations.js';
 import { processEditOrganizationForm } from './organizations.js';
 import { showNewProjectForm, processNewProjectForm } from './projects.js';
+import { processAssignCategoriesForm, showAssignCategoriesForm } from './categories.js';
 
 import { showProjectDetailsPage, showProjectsPage } from './projects.js';
 import { showCategoriesPage, showCategoryDetailsPage } from './categories.js';
@@ -24,6 +25,9 @@ router.get('/organizations', showOrganizationsPage);
 router.get('/projects', showProjectsPage);
 router.get('/categories', showCategoriesPage);
 router.get('/category/:id', showCategoryDetailsPage);
+// Routes to handle the assign categories to project form
+router.get('/assign-categories/:projectId', showAssignCategoriesForm);
+
 // Route for new organization page
 router.get('/new-organization', showNewOrganizationForm);
 router.get('/edit-organization/:id', showEditOrganizationForm);
@@ -31,7 +35,8 @@ router.get('/new-project', showNewProjectForm);
 // Route to handle new organization form submission
 router.post('/new-organization', organizationValidation, processNewOrganizationForm);
 router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
-router.post('/new-project',projectValidation, processNewProjectForm);
+router.post('/new-project', projectValidation, processNewProjectForm);
+router.post('/assign-categories/:projectId', processAssignCategoriesForm);
 
 
 
