@@ -77,13 +77,12 @@ const showProjectsByOrganization = async (req, res) => {
 
 const showNewProjectForm = async (req, res) => {
     const organizations = await getAllOrganizations();
-    const title = 'Create New Service Project';
+    const title = 'Add New Service Project';
 
     res.render('new-project', { title, organizations });
-};
+}
 
 const processNewProjectForm = async (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         // Loop through validation errors and flash them
@@ -94,16 +93,18 @@ const processNewProjectForm = async (req, res) => {
         // Redirect back to the new project form
         return res.redirect('/new-project');
     }
+    // Extract form data from req.body
+    const { title, description, location, date, organizationId } = req.body;
 
     try {
-        // Create a new project in the database
+        // Create the new project in the database
         const newProjectId = await createProject(title, description, location, date, organizationId);
 
-        req.flash('success', 'Project created successfully!');
+        req.flash('success', 'New service project created successfully!');
         res.redirect(`/project/${newProjectId}`);
     } catch (error) {
-        console.error('Error creating project:', error);
-        req.flash('error', 'Failed to create project. Please try again.');
+        console.error('Error creating new project:', error);
+        req.flash('error', 'There was an error creating the service project.');
         res.redirect('/new-project');
     }
 }
