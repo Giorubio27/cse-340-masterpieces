@@ -15,6 +15,7 @@ import { showProjectDetailsPage, showProjectsPage } from './projects.js';
 import { showCategoriesPage, showCategoryDetailsPage } from './categories.js';
 import { testErrorPage } from './errors.js';
 import { validationResult } from 'express-validator';
+import { projectValidation } from './projects.js';
 
 const router = express.Router();
 
@@ -30,7 +31,7 @@ router.get('/new-project', showNewProjectForm);
 // Route to handle new organization form submission
 router.post('/new-organization', organizationValidation, processNewOrganizationForm);
 router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
-router.post('/new-project', processNewProjectForm);
+router.post('/new-project',projectValidation, processNewProjectForm);
 
 
 

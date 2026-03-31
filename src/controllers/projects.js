@@ -3,6 +3,36 @@ import { getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails } f
 import { getAllCategoriesByProjectId } from '../models/categories.js';
 import { createProject } from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
+import { validationResult, body } from 'express-validator';
+
+const projectValidation = [
+    body('title')
+        .trim()
+        .notEmpty()
+        .withMessage('Project title is required')
+        .isLength({ min: 3, max: 200 })
+        .withMessage('Project title must be between 3 and 200 characters'),
+    body('description')
+        .trim()
+        .notEmpty()
+        .withMessage('Project description is required')
+        .isLength({ max: 1000 })
+        .withMessage('Project description cannot exceed 1000 characters'),
+    body('location')
+        .trim()
+        .notEmpty()
+        .isLength({ max: 200 })
+        .withMessage('Project location is required'),
+    body('date')
+        .notEmpty()
+        .withMessage('Project date is required')
+        .isISO8601()
+        .withMessage('Please provide a valid date'),
+    body('organizationId')
+        .notEmpty()
+        .isInt()
+        .withMessage('Organization ID must be a valid integer')
+]
 
 const number_of_upcoming_projects = 5; // You can adjust this number as needed
 
@@ -53,8 +83,17 @@ const showNewProjectForm = async (req, res) => {
 };
 
 const processNewProjectForm = async (req, res) => {
-    // Extract form data from the request body
-    const { title, description, location, date, organizationId } = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        // Loop through validation errors and flash them
+        errors.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the new project form
+        return res.redirect('/new-project');
+    }
 
     try {
         // Create a new project in the database
@@ -71,4 +110,11 @@ const processNewProjectForm = async (req, res) => {
 
 
 // Export any controller functions
-export { showProjectsPage, showProjectsByOrganization, showProjectDetailsPage, showNewProjectForm, processNewProjectForm };
+export {
+    showProjectsPage,
+    showProjectsByOrganization,
+    showProjectDetailsPage,
+    showNewProjectForm,
+    processNewProjectForm, 
+    projectValidation
+};
