@@ -2,17 +2,18 @@ import express from 'express';
 
 
 import { showHomePage } from './index.js';
-import { showOrganizationsPage } from './organizations.js';
-import { showOrganizationDetailsPage } from './organizations.js';
-import { showNewOrganizationForm } from './organizations.js';
-import { processNewOrganizationForm } from './organizations.js';
-import { organizationValidation } from './organizations.js';
-import { showEditOrganizationForm } from './organizations.js';
-import { processEditOrganizationForm } from './organizations.js';
+import {
+    showOrganizationsPage,
+    showOrganizationDetailsPage,
+    showNewOrganizationForm 
+    , processNewOrganizationForm,
+    organizationValidation,
+    showEditOrganizationForm,
+    processEditOrganizationForm
+} from './organizations.js';
 import { showNewProjectForm, processNewProjectForm } from './projects.js';
-import { processAssignCategoriesForm, showAssignCategoriesForm } from './categories.js';
-
 import { showProjectDetailsPage, showProjectsPage } from './projects.js';
+import { processAssignCategoriesForm, showAssignCategoriesForm } from './categories.js';
 import { showCategoriesPage, showCategoryDetailsPage } from './categories.js';
 import { testErrorPage } from './errors.js';
 
