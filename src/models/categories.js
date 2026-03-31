@@ -1,18 +1,18 @@
 import db from './db.js';
 
-export const getAllCategories = async () => {
+const getAllCategories = async () => {
     const query = `SELECT category_id, category_name FROM categories ORDER BY category_name;`;
     const result = await db.query(query);
     return result.rows;
 };
 
-export const getCategoryById = async (id) => {
+const getCategoryById = async (id) => {
     const query = `SELECT category_id, category_name FROM categories WHERE category_id = $1;`;
     const result = await db.query(query, [id]);
     return result.rows[0];
 };
 
-export const getAllCategoriesByProjectId = async (projectId) => {
+const getAllCategoriesByProjectId = async (projectId) => {
     const query = `
         SELECT c.category_id, c.category_name
         FROM categories c
@@ -22,7 +22,7 @@ export const getAllCategoriesByProjectId = async (projectId) => {
     return result.rows;
 };
 
-export const getAllProjectsByCategoryId = async (categoryId) => {
+const getAllProjectsByCategoryId = async (categoryId) => {
     const query = `
         SELECT p.project_id, p.title, p.description, p.date, p.location
         FROM projects p
@@ -31,6 +31,29 @@ export const getAllProjectsByCategoryId = async (categoryId) => {
     const result = await db.query(query, [categoryId]);
     return result.rows;
 };
+
+const assignCategoryToProject = async (projectId, categoryId) => {
+    const query = `
+    INSERT INTO categories_projects (category_id, project_id) 
+    VALUES ($1, $2);`;
+
+    await db.query(query, [categoryId, projectId]);
+}
+
+const updateCategoryAssignments = async (projectId, categoryIds) => {
+    const deleteQuery = `
+    DELETE FROM categories_projects WHERE
+    project_id = $1;`;
+
+    await db.query(deleteQuery, [projectId])
+
+    // Next, add the new category assignments
+    for (const categoryId of categoryIds) {
+        await assignCategoryToProject(categoryId, projectId);
+    }
+}
+
+export { getAllCategories, getAllProjectsByCategoryId, getCategoryById, getAllCategoriesByProjectId, updateCategoryAssignments}
 
 // import db from './db.js';
 
