@@ -9,10 +9,12 @@ import { processNewOrganizationForm } from './organizations.js';
 import { organizationValidation } from './organizations.js';
 import { showEditOrganizationForm } from './organizations.js';
 import { processEditOrganizationForm } from './organizations.js';
+import { showNewProjectForm, processNewProjectForm } from './projects.js';
 
 import { showProjectDetailsPage, showProjectsPage } from './projects.js';
 import { showCategoriesPage, showCategoryDetailsPage } from './categories.js';
 import { testErrorPage } from './errors.js';
+import { validationResult } from 'express-validator';
 
 const router = express.Router();
 
@@ -24,9 +26,11 @@ router.get('/category/:id', showCategoryDetailsPage);
 // Route for new organization page
 router.get('/new-organization', showNewOrganizationForm);
 router.get('/edit-organization/:id', showEditOrganizationForm);
+router.get('/new-project', showNewProjectForm);
 // Route to handle new organization form submission
 router.post('/new-organization', organizationValidation, processNewOrganizationForm);
-router.post('/edit-organization/:id',organizationValidation, processEditOrganizationForm)
+router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
+router.post('/new-project', processNewProjectForm);
 
 
 

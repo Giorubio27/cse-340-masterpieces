@@ -1,4 +1,5 @@
-import db from './db.js'
+import db from './db.js';
+
 
 const getAllOrganizations = async () => {
     const query = `
