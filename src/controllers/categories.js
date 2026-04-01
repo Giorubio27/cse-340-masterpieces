@@ -22,7 +22,7 @@ const showAssignCategoriesForm = async (req, res) => {
 
     const projectDetails = await getProjectDetails(projectId);
     const categories = await getAllCategories();
-    const assignedCategories = await getCategoriesByServiceProjectId(projectId);
+    const assignedCategories = await getAllCategoriesByProjectId(projectId);
 
     const title = 'Assign Categories to Project';
 
