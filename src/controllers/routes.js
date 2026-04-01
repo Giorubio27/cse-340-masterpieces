@@ -37,7 +37,7 @@ router.get('/new-project', showNewProjectForm);
 router.post('/new-organization', organizationValidation, processNewOrganizationForm);
 router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
 router.post('/new-project', projectValidation, processNewProjectForm);
-router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+router.post('/assign-categories/:projectId',projectValidation, processAssignCategoriesForm);
 
 
 
