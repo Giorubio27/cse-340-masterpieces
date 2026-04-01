@@ -56,8 +56,8 @@ const updateCategoryAssignments = async (projectId, categoryIds) => {
 
 const createNewCategory = async (categoryName) => {
     const query = `INSERT INTO categories (category_name) Values
-    ($1);
-    RETURNING category_id`;
+    ($1)
+    RETURNING category_id;`;
     const query_params = [categoryName];
     const result = await db.query(query, query_params);
     if (result.rows.length === 0) {

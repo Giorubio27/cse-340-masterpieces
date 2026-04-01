@@ -5,7 +5,7 @@ import { showHomePage } from './index.js';
 import {
     showOrganizationsPage,
     showOrganizationDetailsPage,
-    showNewOrganizationForm 
+    showNewOrganizationForm
     , processNewOrganizationForm,
     organizationValidation,
     showEditOrganizationForm,
@@ -42,7 +42,7 @@ router.post('/edit-organization/:id', organizationValidation, processEditOrganiz
 router.post('/new-project', projectValidation, processNewProjectForm);
 router.post('/new-category', categoryValidation, processNewCategoryForm);
 router.post('/edit-project/:id', projectValidation, processEditProjectForm);
-router.post('/assign-categories/:projectId',projectValidation, processAssignCategoriesForm);
+router.post('/assign-categories/:projectId', projectValidation, processAssignCategoriesForm);
 
 
 
