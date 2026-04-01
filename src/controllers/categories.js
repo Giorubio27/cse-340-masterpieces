@@ -1,6 +1,16 @@
 // Import any needed model functions
-import { getAllCategories, getAllProjectsByCategoryId, getAllCategoriesByProjectId, getCategoryById, updateCategoryAssignments } from '../models/categories.js';
+import { getAllCategories, getAllProjectsByCategoryId, getAllCategoriesByProjectId, getCategoryById, updateCategoryAssignments, createNewCategory } from '../models/categories.js';
 import { getProjectDetails } from '../models/projects.js';
+import { validationResult, body } from 'express-validator';
+
+const categoryValidation = [
+    body('category_name')
+        .trim()
+        .notEmpty()
+        .withMessage('category name is required')
+];
+        
+        
 // Define any controller functions
 const showCategoriesPage = async (req, res) => {
     const categories = await getAllCategories();
@@ -40,8 +50,47 @@ const processAssignCategoriesForm = async (req, res) => {
     res.redirect(`/project/${projectId}`);
 };
 
+const showNewCategoryForm = async (req, res) => {
+    const title = 'Add New Category';
+
+    res.render('new-category', title);
+}
+
+const processNewCategoryForm = async (req, res) => {
+    const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            // Loop through validation errors and flash them
+            errors.array().forEach((error) => {
+                req.flash('error', error.msg);
+            });
+    
+            // Redirect back to the new project form
+            return res.redirect('/new-category');
+        }
+
+    const { categoryName } = req.body;
+
+    try {
+        const newCategoryId = await createNewCategory(categoryName);
+        req.flash('success', 'New was created successfully!');
+        res.redirect(`/project/${newCategoryId}`);
+    } catch (error) {
+        console.error('Error creating new category:', error);
+        req.flash('error', 'There was an error creating the category.');
+        res.redirect('/new-category');
+    };
+}
+
 
 
 
 // Export any controller functions
-export { showCategoriesPage, showCategoryDetailsPage, showAssignCategoriesForm, processAssignCategoriesForm };
+export {
+    showCategoriesPage,
+    showCategoryDetailsPage,
+    showAssignCategoriesForm,
+    processAssignCategoriesForm,
+    showNewCategoryForm,
+    processNewCategoryForm,
+    categoryValidation
+};
