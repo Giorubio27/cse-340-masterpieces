@@ -4,13 +4,13 @@ import { getProjectDetails } from '../models/projects.js';
 import { validationResult, body } from 'express-validator';
 
 const categoryValidation = [
-    body('category_name')
+    body('categoryName')
         .trim()
         .notEmpty()
         .withMessage('category name is required')
 ];
-        
-        
+
+
 // Define any controller functions
 const showCategoriesPage = async (req, res) => {
     const categories = await getAllCategories();
@@ -53,27 +53,27 @@ const processAssignCategoriesForm = async (req, res) => {
 const showNewCategoryForm = async (req, res) => {
     const title = 'Add New Category';
 
-    res.render('new-category', title);
+    res.render('new-category', { title });
 }
 
 const processNewCategoryForm = async (req, res) => {
     const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            // Loop through validation errors and flash them
-            errors.array().forEach((error) => {
-                req.flash('error', error.msg);
-            });
-    
-            // Redirect back to the new project form
-            return res.redirect('/new-category');
-        }
+    if (!errors.isEmpty()) {
+        // Loop through validation errors and flash them
+        errors.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the new project form
+        return res.redirect('/new-category');
+    }
 
     const { categoryName } = req.body;
 
     try {
         const newCategoryId = await createNewCategory(categoryName);
-        req.flash('success', 'New was created successfully!');
-        res.redirect(`/project/${newCategoryId}`);
+        req.flash('success', 'New category was created successfully!');
+        res.redirect(`/category/${newCategoryId}`);
     } catch (error) {
         console.error('Error creating new category:', error);
         req.flash('error', 'There was an error creating the category.');
