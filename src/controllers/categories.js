@@ -1,5 +1,5 @@
 // Import any needed model functions
-import { getAllCategories, getAllProjectsByCategoryId, getAllCategoriesByProjectId, getCategoryById, updateCategoryAssignments, createNewCategory } from '../models/categories.js';
+import { getAllCategories, getAllProjectsByCategoryId, getAllCategoriesByProjectId, getCategoryById, updateCategoryAssignments, createNewCategory, updateCategory } from '../models/categories.js';
 import { getProjectDetails } from '../models/projects.js';
 import { validationResult, body } from 'express-validator';
 
@@ -79,7 +79,41 @@ const processNewCategoryForm = async (req, res) => {
         req.flash('error', 'There was an error creating the category.');
         res.redirect('/new-category');
     };
+};
+
+const showEditCategoryForm = async (req, res) => {
+
+
+    const categoryId = req.params.id;
+    const category = await getCategoryById(categoryId);
+    const title = 'Edit category';
+
+    res.render('edit-category', { title, category });
 }
+
+const processEditCategoryForm = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        // Loop through validation errors and flash them
+        errors.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+        // Redirect back to the new project form
+        return res.redirect(`/edit-category/${categoryId}`);
+    };
+    const categoryId = req.params.id;
+    const { categoryName } = req.body;
+
+    try {
+        await updateCategory(categoryName, categoryId);
+        req.flash('success', 'update of category was successful!');
+        res.redirect(`/category/${categoryId}`);
+    } catch (error) {
+        console.error('Error updating category:', error);
+        req.flash('error', 'There was an error updating the category.');
+        res.redirect(`/edit-category/${categoryId}`);
+    };
+};
 
 
 
@@ -92,5 +126,7 @@ export {
     processAssignCategoriesForm,
     showNewCategoryForm,
     processNewCategoryForm,
-    categoryValidation
+    categoryValidation,
+    showEditCategoryForm,
+    processEditCategoryForm
 };

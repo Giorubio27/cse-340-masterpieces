@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+            <form action="/edit-category/<%= category.category_id %>" method="POST" class="form-standard">
+                <div class="form-group">
+                    <label for="categoryName">Category Name</label>
+                    <input type="text" id="categoryName" name="categoryName" value="<%= category.category_name %>"
+                        required minlength="3">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Update Category</button>
+                    <a href="/category/<%= category.category_id %>" class="btn-cancel">Cancel</a>
+                </div>
+            </form>
+    </main>
+    <%- include('partials/footer') %>

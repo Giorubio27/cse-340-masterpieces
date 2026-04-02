@@ -15,7 +15,7 @@ import { showNewProjectForm, processNewProjectForm } from './projects.js';
 import { showProjectDetailsPage, showProjectsPage } from './projects.js';
 import { showEditProjectForm, processEditProjectForm } from './projects.js';
 import { processAssignCategoriesForm, showAssignCategoriesForm } from './categories.js';
-import { showCategoriesPage, showCategoryDetailsPage, showNewCategoryForm, processNewCategoryForm, categoryValidation } from './categories.js';
+import { showCategoriesPage, showCategoryDetailsPage, showNewCategoryForm, processNewCategoryForm, categoryValidation, showEditCategoryForm, processEditCategoryForm } from './categories.js';
 import { testErrorPage } from './errors.js';
 
 import { projectValidation } from './projects.js';
@@ -36,11 +36,13 @@ router.get('/edit-organization/:id', showEditOrganizationForm);
 router.get('/new-project', showNewProjectForm);
 router.get('/new-category', showNewCategoryForm);
 router.get('/edit-project/:id', showEditProjectForm);
+router.get('/edit-category/:id', showEditCategoryForm);
 // Route to handle new organization form submission
 router.post('/new-organization', organizationValidation, processNewOrganizationForm);
 router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
 router.post('/new-project', projectValidation, processNewProjectForm);
 router.post('/new-category', categoryValidation, processNewCategoryForm);
+router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
 router.post('/edit-project/:id', projectValidation, processEditProjectForm);
 router.post('/assign-categories/:projectId', projectValidation, processAssignCategoriesForm);
 

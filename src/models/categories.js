@@ -71,6 +71,18 @@ const createNewCategory = async (categoryName) => {
     return result.rows[0].category_id;
 
 }
+const updateCategory = async (categoryName, categoryId) => {
+    const query = `UPDATE categories SET category_name = $1 WHERE category_id = $2;`;
+    const queryParams = [categoryName, categoryId];
+    const result = await db.query(query, queryParams);
 
-export { getAllCategories, getAllProjectsByCategoryId, getCategoryById, getAllCategoriesByProjectId, updateCategoryAssignments, createNewCategory }
+    // Use rowCount for UPDATE/DELETE queries
+    if (result.rowCount === 0) {
+        throw new Error('Category not updated');
+    }
+    return true;
+};
+
+
+export { getAllCategories, getAllProjectsByCategoryId, getCategoryById, getAllCategoriesByProjectId, updateCategoryAssignments, createNewCategory, updateCategory }
 
