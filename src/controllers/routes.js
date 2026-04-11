@@ -16,6 +16,7 @@ import { showProjectDetailsPage, showProjectsPage } from './projects.js';
 import { showEditProjectForm, processEditProjectForm } from './projects.js';
 import { processAssignCategoriesForm, showAssignCategoriesForm } from './categories.js';
 import { showCategoriesPage, showCategoryDetailsPage, showNewCategoryForm, processNewCategoryForm, categoryValidation, showEditCategoryForm, processEditCategoryForm } from './categories.js';
+import { showUserRegistrationForm, processUserRegistrationForm } from './users.js';
 import { testErrorPage } from './errors.js';
 
 import { projectValidation } from './projects.js';
@@ -29,6 +30,7 @@ router.get('/categories', showCategoriesPage);
 router.get('/category/:id', showCategoryDetailsPage);
 // Routes to handle the assign categories to project form
 router.get('/assign-categories/:projectId', showAssignCategoriesForm);
+router.get('/register', showUserRegistrationForm);
 
 // Route for new organization page
 router.get('/new-organization', showNewOrganizationForm);
@@ -45,6 +47,7 @@ router.post('/new-category', categoryValidation, processNewCategoryForm);
 router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
 router.post('/edit-project/:id', projectValidation, processEditProjectForm);
 router.post('/assign-categories/:projectId', projectValidation, processAssignCategoriesForm);
+router.post('/register', processUserRegistrationForm);
 
 
 

@@ -140,3 +140,36 @@ FROM public.categories_projects
 GROUP BY categories_category_id, projects_project_id
 HAVING COUNT(*) > 1;
 
+CREATE TABLE IF NOT EXISTS public.roles (
+    role_id SERIAL PRIMARY KEY,
+    role_name VARCHAR(50) NOT NULL UNIQUE,
+    role_description TEXT
+);
+
+
+
+INSERT INTO public.roles (role_name, role_description) VALUES
+('user', 'Standard user with basic access'),
+('admin', 'Administrator with full system access');
+
+SELECT * FROM roles;
+
+CREATE TABLE IF NOT EXISTS users (
+	user_id serial PRIMARY KEY NOT NULL,
+	name character varying(100) NOT NULL,
+	email character varying(100) UNIQUE NOT NULL,
+	password_hash character varying(255) NOT NULL,
+	role_id integer REFERENCES roles(role_id),
+	created_at timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (name, email, password_hash, role_id)
+VALUES ('testuser','test@example.com', 'placeholder_hash', 1);
+
+SELECT u.user_id, u.name, u.email, r.role_name, r.role_description
+FROM users u
+JOIN roles r ON u.role_id = r.role_id;
+
+DELETE FROM users WHERE email = 'test@example.com';
+
+
