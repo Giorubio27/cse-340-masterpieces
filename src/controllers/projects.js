@@ -120,6 +120,8 @@ const showEditProjectForm = async (req, res) => {
 }
 
 const processEditProjectForm = async (req, res) => {
+    const projectId = req.params.id;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         // Loop through validation errors and flash them
@@ -127,9 +129,9 @@ const processEditProjectForm = async (req, res) => {
             req.flash('error', error.msg);
         });
         // Redirect back to the new project form
-        return res.redirect('/edit-project');
+        return res.redirect(`/edit-project/${projectId}`);
     };
-    const projectId = req.params.id;
+
     const { title, description, location, date, organizationId } = req.body;
 
     await updateProject(projectId, title, description, location, date, organizationId);
@@ -148,8 +150,8 @@ export {
     showProjectsByOrganization,
     showProjectDetailsPage,
     showNewProjectForm,
-    processNewProjectForm, 
+    processNewProjectForm,
     projectValidation,
-    showEditProjectForm, 
+    showEditProjectForm,
     processEditProjectForm
 };
