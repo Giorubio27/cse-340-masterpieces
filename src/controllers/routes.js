@@ -16,7 +16,7 @@ import { showProjectDetailsPage, showProjectsPage } from './projects.js';
 import { showEditProjectForm, processEditProjectForm } from './projects.js';
 import { processAssignCategoriesForm, showAssignCategoriesForm } from './categories.js';
 import { showCategoriesPage, showCategoryDetailsPage, showNewCategoryForm, processNewCategoryForm, categoryValidation, showEditCategoryForm, processEditCategoryForm } from './categories.js';
-import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole } from './users.js';
+import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showUsersPage } from './users.js';
 import { testErrorPage } from './errors.js';
 
 import { projectValidation } from './projects.js';
@@ -32,6 +32,7 @@ router.get('/category/:id', showCategoryDetailsPage);
 // Routes to handle the assign categories to project form
 router.get('/assign-categories/:projectId', requireRole('admin'), showAssignCategoriesForm);
 router.get('/register', showUserRegistrationForm);
+router.get('/users', requireRole('admin'), showUsersPage);
 router.get('/login', showLoginForm);
 router.get('/logout', processLogout);
 

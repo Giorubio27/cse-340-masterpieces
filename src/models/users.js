@@ -1,6 +1,19 @@
 import db from "./db.js";
 import { compare } from "bcrypt";
 
+const getAllUsers = async () => {
+    const query = `
+        SELECT u.name, u.email, r.role_name 
+        FROM users u
+        JOIN roles r ON u.role_id = r.role_id
+        ORDER BY u.name ASC
+    `;
+    const result = await db.query(query);
+    return result.rows;
+};
+
+
+
 
 const createUser = async (name, email, passwordHash) => {
     const default_role = 'user';
@@ -65,4 +78,4 @@ const authenticateUser = async (email, password) => {
 }
 
 
-export { createUser, authenticateUser };
+export { createUser, authenticateUser, getAllUsers };
