@@ -217,6 +217,66 @@ main ul li a[href^="/project/"]:hover {
     border-color: #bee5eb;
 }
 
+/* Container to handle overflow on mobile */
+.table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    font-family: sans-serif;
+}
+
+/* Header styling */
+.user-table thead {
+    background-color: #2c3e50;
+    /* Professional dark blue/grey */
+    color: #ffffff;
+    text-align: left;
+}
+
+.user-table th,
+.user-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #dddddd;
+}
+
+/* Zebra Striping */
+.user-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+/* Hover effect */
+.user-table tbody tr:hover {
+    background-color: #e9ecef;
+    cursor: default;
+}
+
+/* Role Badges */
+.role-badge {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.role-badge.admin {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.role-badge.user {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
 /* 5. Desktop Enhancements (Screen widths 768px and up) */
 @media (min-width: 768px) {
     nav {
