@@ -8,6 +8,8 @@ const categoryValidation = [
         .trim()
         .notEmpty()
         .withMessage('category name is required')
+        .isLength({ min: 3 })
+        .withMessage('Category name must be at least 3 characters long')
 ];
 
 
