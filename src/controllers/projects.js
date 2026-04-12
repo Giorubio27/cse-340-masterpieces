@@ -3,7 +3,7 @@ import { getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails } f
 import { getAllCategoriesByProjectId } from '../models/categories.js';
 import { createProject } from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
-import { updateProject } from '../models/projects.js';
+import { updateProject, isUserVolunteering } from '../models/projects.js';
 import { validationResult, body } from 'express-validator';
 
 const projectValidation = [
@@ -47,25 +47,21 @@ const showProjectsPage = async (req, res) => {
 };
 
 // 4. Create the new controller function for project details
-const showProjectDetailsPage = async (req, res, next) => {
-    // Extract the service project ID from the URL parameters
+const showProjectDetailsPage = async (req, res) => {
     const projectId = req.params.id;
-
-    // Retrieve the specific project using the model function
     const project = await getProjectDetails(projectId);
 
-    if (!project) {
-        const error = new Error('Project not found');
-        error.status = 404;
-        return next(error); // Pass the error to the error-handling middleware
-
+    let isVolunteering = false;
+    if (req.session.user) {
+        isVolunteering = await isUserVolunteering(projectId, req.session.user.user_id);
     }
 
-    const categories = await getAllCategoriesByProjectId(projectId);
-
-
-    // Render the new view (project.ejs) and pass the data
-    res.render('project', { title: project.title, project, categories });
+    res.render('project-details', {
+        title: project.title,
+        project,
+        isVolunteering,
+        isLoggedIn: !!req.session.user
+    });
 };
 
 const showProjectsByOrganization = async (req, res) => {

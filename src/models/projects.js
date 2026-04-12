@@ -1,7 +1,7 @@
 import db from './db.js';
 
 const getAllProjects = async () => {
-  const query = `SELECT p.title, p.date, o.name AS organization_name
+  const query = `SELECT p.project_id, p.title, p.date, o.name AS organization_name
     FROM public.projects p
     JOIN public.organization o ON p.organization_id = o.organization_id
     ORDER BY p.date ASC;`;
@@ -100,6 +100,28 @@ const updateProject = async (projectId, title, description, location, date, orga
 
 }
 
+// Add a volunteer to a project
+const addVolunteer = async (projectId, userId) => {
+  const query = 'INSERT INTO project_assignments (project_id, user_id) VALUES ($1, $2) ON CONFLICT DO NOTHING';
+  return await db.query(query, [projectId, userId]);
+};
+
+// Remove a volunteer from a project
+const removeVolunteer = async (projectId, userId) => {
+  const query = 'DELETE FROM project_assignments WHERE project_id = $1 AND user_id = $2';
+  return await db.query(query, [projectId, userId]);
+};
+
+// Check if a user is already volunteering for a specific project
+const isUserVolunteering = async (projectId, userId) => {
+  const query = 'SELECT 1 FROM project_assignments WHERE project_id = $1 AND user_id = $2';
+  const result = await db.query(query, [projectId, userId]);
+  return result.rows.length > 0;
+};
+
 // Don't forget to add getProjectDetails to your export statement
-export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails, createProject, updateProject };
+export {
+  getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails, createProject, updateProject,
+  isUserVolunteering, addVolunteer, removeVolunteer
+ };
 

@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser, getAllUsers } from '../models/users.js';
+import { createUser, authenticateUser, getAllUsers, getUserById, getProjectsByUserId, updateProjectAssignments } from '../models/users.js';
+import { getAllProjects } from '../models/projects.js';
+import { addVolunteer, removeVolunteer } from '../models/projects.js';
 
 
 const showUserRegistrationForm = async (req, res) => {
@@ -72,14 +74,14 @@ const requireLogin = async (req, res, next) => {
     next();
 };
 
-const showDashboard = async (req, res, next) => {
-    const user = req.session.user;
-    res.render('dashboard', {
-        title: 'Dashboard',
-        name: user.name,
-        email: user.email
-    });
-};
+// const showDashboard = async (req, res, next) => {
+//     const user = req.session.user;
+//     res.render('dashboard', {
+//         title: 'Dashboard',
+//         name: user.name,
+//         email: user.email
+//     });
+// };
 
 /**
  * Middleware factory to require specific role for route access
@@ -115,6 +117,72 @@ const showUsersPage = async (req, res) => {
     });
 };
 
+const showAssignProjectsForm = async (req, res) => {
+    const userId = req.params.userId;
+
+    const userDetails = await getUserById(userId);
+    const projects = await getAllProjects(); // Imported from your projects model
+    const assignedProjects = await getProjectsByUserId(userId);
+
+    const title = `Assign Projects to ${userDetails.name}`;
+
+    res.render('assign-projects', {
+        title,
+        userId,
+        userDetails,
+        projects,
+        assignedProjects
+    });
+};
+
+const processAssignProjectsForm = async (req, res) => {
+    const userId = parseInt(req.params.userId); // Ensure this is a number
+    const selectedProjectIds = req.body.projectIds || [];
+
+    // 1. Convert to array and 2. Map to integers
+    const projectIdsArray = (Array.isArray(selectedProjectIds) ? selectedProjectIds : [selectedProjectIds])
+        .map(id => parseInt(id));
+
+    console.log("Processing IDs for User:", userId, "Project IDs:", projectIdsArray);
+
+    try {
+        await updateProjectAssignments(userId, projectIdsArray);
+        req.flash('success', 'User project assignments updated successfully.');
+        res.redirect('/users');
+    } catch (error) {
+        console.error("Assignment Error:", error);
+        req.flash('error', 'Failed to update assignments.');
+        res.redirect(`/assign-projects/${userId}`);
+    }
+};
+
+const volunteerAction = async (req, res) => {
+    const projectId = req.params.projectId;
+    const userId = req.session.user.user_id;
+    const action = req.path.includes('join') ? 'add' : 'remove';
+
+    if (action === 'add') {
+        await addVolunteer(projectId, userId);
+        req.flash('success', 'You are now volunteering for this project!');
+    } else {
+        await removeVolunteer(projectId, userId);
+        req.flash('success', 'You have removed yourself from this project.');
+    }
+    res.redirect(`/project/${projectId}`);
+};
+
+const showDashboard = async (req, res) => {
+    const user = req.session.user;
+    const volunteeredProjects = await getProjectsByUserId(user.user_id); // Using the function we created earlier
+
+    res.render('dashboard', {
+        title: 'Dashboard',
+        name: user.name,
+        email: user.email,
+        volunteeredProjects
+    });
+};
+
 
 export {
     showUserRegistrationForm,
@@ -124,6 +192,8 @@ export {
     processLogout,
     requireLogin,
     showDashboard,
-    requireRole, 
-    showUsersPage
+    requireRole,
+    showUsersPage,
+    showAssignProjectsForm, processAssignProjectsForm,
+    volunteerAction
 };

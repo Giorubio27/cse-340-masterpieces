@@ -18,6 +18,17 @@
                     <p><strong>Location:</strong>
                         <%= project.location %>
                     </p>
+                    <% if (isLoggedIn) { %>
+                        <div class="volunteer-box">
+                            <% if (isVolunteering) { %>
+                                <p><strong>You are volunteering for this project!</strong></p>
+                                <a href="/projects/leave/<%= project.project_id %>" class="btn-leave">Stop Volunteering</a>
+                                <% } else { %>
+                                    <a href="/projects/join/<%= project.project_id %>" class="btn-volunteer">Volunteer for this Project</a>
+                                    <% } %>
+                        </div>
+                        <% } %>
+                    
 
                     <p><strong>Partner Organization:</strong>
                         <a href="/organization/<%= project.organization_id %>">

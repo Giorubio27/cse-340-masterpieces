@@ -25,6 +25,9 @@
                             <td class="role-badge <%= user.role_name.toLowerCase() %>">
                                 <%= user.role_name %>
                             </td>
+                            <td>
+                                <a href="/assign-projects/<%= user.user_id %>">Manage Projects</a>
+                            </td>
                         </tr>
                         <% }); %>
                 </tbody>
