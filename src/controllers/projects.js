@@ -47,20 +47,30 @@ const showProjectsPage = async (req, res) => {
 };
 
 // 4. Create the new controller function for project details
+// In projects.js
 const showProjectDetailsPage = async (req, res) => {
     const projectId = req.params.id;
     const project = await getProjectDetails(projectId);
+    const categories = await getAllCategoriesByProjectId(projectId);
 
+    // 1. Determine if the user is logged in
+    const isLoggedIn = !!(req.session && req.session.user);
+
+    // 2. Determine if they are already volunteering
     let isVolunteering = false;
-    if (req.session.user) {
+    if (isLoggedIn) {
+        // Make sure isUserVolunteering is imported at the top of this file
         isVolunteering = await isUserVolunteering(projectId, req.session.user.user_id);
     }
 
-    res.render('project-details', {
+    // 3. Pass EVERYTHING to the view
+    res.render('project', {
         title: project.title,
         project,
+        categories,
+        isLoggedIn,
         isVolunteering,
-        isLoggedIn: !!req.session.user
+        user: req.session.user // Ensure the 'user' variable is also passed for your admin checks
     });
 };
 

@@ -14,6 +14,24 @@
             <a href="/users">Manage All Users</a>
             <% } %>
 
+        <h3>Your Volunteer Projects</h3>
+        <% if (volunteeredProjects.length> 0) { %>
+            <ul class="dashboard-list">
+                <% volunteeredProjects.forEach(project=> { %>
+                    <li>
+                        <a href="/project/<%= project.project_id %>">
+                            <%= project.title %>
+                        </a>
+                        <form action="/projects/leave/<%= project.project_id %>" method="GET" style="display:inline;">
+                            <button type="submit" class="btn-small-danger">Remove</button>
+                        </form>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } else { %>
+                <p>You haven't signed up for any projects yet. <a href="/projects">Find a project!</a></p>
+                <% } %>
+
 
     </main>
 

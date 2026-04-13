@@ -171,15 +171,16 @@ const volunteerAction = async (req, res) => {
     res.redirect(`/project/${projectId}`);
 };
 
+// In users.js
 const showDashboard = async (req, res) => {
     const user = req.session.user;
-    const volunteeredProjects = await getProjectsByUserId(user.user_id); // Using the function we created earlier
+    const volunteeredProjects = await getProjectsByUserId(user.user_id); // Fetch the data
 
     res.render('dashboard', {
         title: 'Dashboard',
         name: user.name,
         email: user.email,
-        volunteeredProjects
+        volunteeredProjects // PASS THIS TO THE VIEW
     });
 };
 

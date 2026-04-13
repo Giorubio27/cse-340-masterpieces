@@ -18,6 +18,7 @@ import { showAssignProjectsForm, processAssignProjectsForm } from './users.js';
 import { processAssignCategoriesForm, showAssignCategoriesForm } from './categories.js';
 import { showCategoriesPage, showCategoryDetailsPage, showNewCategoryForm, processNewCategoryForm, categoryValidation, showEditCategoryForm, processEditCategoryForm } from './categories.js';
 import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showUsersPage } from './users.js';
+import { volunteerAction } from './users.js';
 import { testErrorPage } from './errors.js';
 
 import { projectValidation } from './projects.js';
@@ -45,6 +46,8 @@ router.get('/new-project', requireRole('admin'), showNewProjectForm);
 router.get('/new-category', requireRole('admin'), showNewCategoryForm);
 router.get('/edit-project/:id', requireRole('admin'), showEditProjectForm);
 router.get('/edit-category/:id', requireRole('admin'), showEditCategoryForm);
+router.get('/projects/join/:projectId', requireLogin, volunteerAction);
+router.get('/projects/leave/:projectId', requireLogin, volunteerAction);
 // Route to handle new organization form submission
 router.post('/new-organization', requireRole('admin'), organizationValidation, processNewOrganizationForm);
 router.post('/edit-organization/:id', requireRole('admin'), organizationValidation, processEditOrganizationForm);
