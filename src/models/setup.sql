@@ -180,3 +180,19 @@ UPDATE users SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin')
 
 select * FROM users;
 
+-- Update a specific user to have admin role
+UPDATE users SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin') WHERE user_id = 2;
+
+select * FROM users;
+
+CREATE TABLE IF NOT EXISTS public.project_assignments (
+    project_id INT NOT NULL,
+    user_id INT NOT NULL,
+    assigned_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    -- This creates the many-to-many link
+    CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES public.projects (project_id) ON DELETE CASCADE,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES public.users (user_id) ON DELETE CASCADE,
+    -- Prevents duplicate assignments
+    PRIMARY KEY (project_id, user_id)
+);
+
